@@ -1,18 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>Chat App</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Interactivo</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="chat-container">
-    <ul id="messages"></ul>
-    <form id="form">
-      <input id="input" autocomplete="off" /><button>Enviar</button>
-    </form>
-  </div>
+    <div class="chat-container">
+        <header class="chat-header">
+            <h1>Chat en Tiempo Real</h1>
+            <div class="user-info">
+                <input type="text" id="username" placeholder="Tu nombre">
+                <button id="join-chat">Unirse al chat</button>
+            </div>
+        </header>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="script.js"></script>
+        <main class="chat-main">
+            <div class="chat-messages" id="messages"></div>
+        </main>
+
+        <footer class="chat-form-container">
+            <form id="chat-form">
+                <input
+                    id="msg"
+                    type="text"
+                    placeholder="Escribe un mensaje..."
+                    required
+                    autocomplete="off"
+                />
+                <button type="submit">Enviar</button>
+            </form>
+        </footer>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>

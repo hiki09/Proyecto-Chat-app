@@ -23,14 +23,33 @@ app.use(express.static('public'));
 io.on('connection', (socket) => {
     console.log('Usuario conectado');
 
-    socket.on('disconnect', () => {
-        console.log('Usuario desconectado');
+    socket.on('user joined', (username) => {
+        // Notificar a todos que un usuario se unió
+        socket.broadcast.emit('chat message', {
+            username: 'Sistema',
+            text: `${username} se ha unido al chat`
+        });
     });
 
-    socket.on('chat message', (msg) => {
-        const message = new Message({ content: msg, sender: socket.id });
-        message.save();
-        io.emit('chat message', msg);
+    socket.on('chat message', async (message) => {
+        try {
+            // Guardar mensaje en la base de datos
+            const newMessage = new Message({
+                username: message.username,
+                text: message.text,
+                timestamp: new Date()
+            });
+            await newMessage.save();
+
+            // Emitir mensaje a todos excepto al remitente
+            socket.broadcast.emit('chat message', message);
+        } catch (error) {
+            console.error('Error al guardar mensaje:', error);
+        }
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Usuario desconectado');
     });
 });
 
